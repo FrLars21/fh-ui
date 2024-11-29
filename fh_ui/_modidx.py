@@ -5,4 +5,6 @@ d = { 'settings': { 'branch': 'main',
                 'doc_host': 'https://FrLars21.github.io',
                 'git_url': 'https://github.com/FrLars21/fh-ui',
                 'lib_path': 'fh_ui'},
-  'syms': {'fh_ui.core': {'fh_ui.core.foo': ('core.html#foo', 'fh_ui/core.py')}}}
+  'syms': { 'fh_ui.core': { 'fh_ui.core.Button': ('core.html#button', 'fh_ui/core.py'),
+                            'fh_ui.core.Input': ('core.html#input', 'fh_ui/core.py'),
+                            'fh_ui.core.Label': ('core.html#label', 'fh_ui/core.py')}}}
