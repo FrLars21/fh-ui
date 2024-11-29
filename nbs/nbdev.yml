@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "fh-ui"
+  site-url: "https://FrLars21.github.io/fh-ui"
+  description: "UI components for FastHTML"
+  repo-branch: main
+  repo-url: "https://github.com/FrLars21/fh-ui"
