@@ -1,0 +1,102 @@
+[
+  {
+    "objectID": "sidebar.html",
+    "href": "sidebar.html",
+    "title": "sidebar",
+    "section": "",
+    "text": "import fasthtml.common as fh\nfrom fh_ui.core import *\ndef SidebarLayout(*args, **kwargs):\n    return fh.Div(fh.Style(\"me { display: flex; width: 100%; min-height: 100svh; }\"), *args, **kwargs)\ndef Sidebar(*args, **kwargs):\n    return fh.Div(id=\"sidebar-render\", data_state=\"expanded\")(\n        fh.Style(\"\"\"\n        me { \n            width: 16rem; \n            height: 100svh; \n            position: relative; \n            display: flex; \n            flex-direction: column; \n            border-right: 1px solid var(--zinc-200); \n            background: var(--zinc-100); \n            transition: width 200ms linear;\n        }\n        me[data-state=\"collapsed\"] { width: 0; }\n        me &gt; * { opacity: 1; transition: opacity 100ms linear 100ms; }\n        me[data-state=\"collapsed\"] &gt; * { opacity: 0; transition: opacity 100ms linear; }\n        me[data-state=\"collapsed\"] #sidebar-rail { cursor: e-resize; }\n        \"\"\"),\n        *args, **kwargs)\ndef SidebarHeader(*args, **kwargs):\n    return fh.Div(fh.Style(\"me { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem }\"), *args, **kwargs)\ndef SidebarFooter(*args, **kwargs):\n    return fh.Div(fh.Style(\"me { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem }\"), *args, **kwargs)\ndef SidebarContent(*args, **kwargs):\n    return fh.Div(\n        fh.Style(\"\"\"\n        me { display: flex; min-height: 0px; flex: 1 1 0%; flex-direction: column; gap: 0.5rem; overflow: auto; }\n        \"\"\"), *args, **kwargs)\ndef SidebarRail():\n    return fh.Button(\n        fh.Style(\"\"\"\n        me {\n            cursor: w-resize;\n            position: absolute;\n            right: -1rem;\n            top: 0;\n            bottom: 0;,\n            z-index: 20;\n            width: 1rem;\n            transform: translateX(-50%);\n            transition: all linear;\n            /* display: none; */\n            display: flex;\n            background: transparent;\n            border-width: 0;\n        }\n        \n        me::after {\n            content: '';\n            position: absolute;\n            top: 0;\n            bottom: 0;\n            width: 2px;\n        }\n        \n        me:hover::after { background-color: var(--zinc-300); }\n    \n        \"\"\"), \n        id=\"sidebar-rail\",\n        hx_on_click=\"htmx.find('#sidebar-render').dataset.state = htmx.find('#sidebar-render').dataset.state === 'collapsed' ? 'expanded' : 'collapsed'\",\n        aria_label=\"Toggle Sidebar\", tabindex=\"-1\", title=\"Toggle Sidebar\")\ndef MainContent(*args, **kwargs):\n    return fh.Div(fh.Style(\"me { min-height: 100svh; }\"), *args, **kwargs)",
+    "crumbs": [
+      "sidebar"
+    ]
+  },
+  {
+    "objectID": "sidebar.html#demo",
+    "href": "sidebar.html#demo",
+    "title": "sidebar",
+    "section": "Demo",
+    "text": "Demo\n\nhdrs\n\n[link((),{'rel': 'preconnect', 'href': 'https://rsms.me/'}),\n link((),{'rel': 'stylesheet', 'href': 'https://rsms.me/inter/inter.css'}),\n script(('',),{'src': 'https://unpkg.com/htmx.org@next/dist/htmx.min.js'}),\n script(('',),{'src': 'https://cdn.jsdelivr.net/gh/answerdotai/fasthtml-js@1.0.4/fasthtml.js'}),\n script(('',),{'src': 'https://cdn.jsdelivr.net/gh/answerdotai/surreal@main/surreal.js'}),\n script(('',),{'src': 'https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js'}),\n style((\"\\n    :root {\\n      --zinc-50: #fafafa;\\n      --zinc-100: #f4f4f5;\\n      --zinc-200: #e4e4e7;\\n      --zinc-300: #d4d4d8;\\n      --zinc-400: #a1a1aa;\\n      --zinc-500: #71717a;\\n      --zinc-600: #52525b;\\n      --zinc-700: #3f3f46;\\n      --zinc-800: #27272a;\\n      --zinc-900: #18181b;\\n      --zinc-950: #09090b;\\n\\n      --red-50: #fef2f2;\\n      --red-100: #fee2e2;\\n      --red-200: #fecaca;\\n      --red-300: #fca5a5;\\n      --red-400: #f87171;\\n      --red-500: #ef4444;\\n      --red-600: #dc2626;\\n      --red-700: #b91c1c;\\n      --red-800: #991b1b;\\n      --red-900: #7f1d1d;\\n      --red-950: #450a0a;  \\n\\n      font-size: 1rem;\\n      font-family: Inter, sans-serif;\\n      font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */\\n    }\\n    @supports (font-variation-settings: normal) {\\n        :root { font-family: InterVariable, sans-serif; }\\n    }\\n    \",),{})]\n\n\n\nfh.show(*hdrs,\n    SidebarLayout(\n        Sidebar(\n            SidebarHeader(\n                fh.Style(\"me { border-bottom: 1px solid var(--zinc-200); }\"),\n                Button(fh.Style(\"me { anchor-name: --myAnchor; }\"), \"open\", popover_anchor=True, popovertarget=\"hdr-popper\", variant=\"outline\"),\n                fh.Div(id=\"hdr-popper\", popover=True)(\n                    fh.Style(\"me { position: absolute; position-anchor: --myAnchor; top: anchor(bottom); left: anchor(right); }\"),\n                    fh.P(\"hdr popper\")\n                )\n            ),\n            SidebarContent(fh.Ul(*[fh.Li(\"Content here\") for _ in range(0,50)])),\n            SidebarFooter(\n                fh.Style(\"me { border-top: 1px solid var(--zinc-200); }\"),\n                Button(\"Footer here\")\n            ),\n            SidebarRail()\n        ),\n        MainContent(\n            fh.Style(\"me { flex: 1 1 0%; }\"),\n            fh.Header(\n                fh.Style(\"me { display: flex; padding: 1rem; gap: 1rem; border-bottom: 1px solid var(--zinc-200); }\"),\n                Button(fh.NotStr(\"&#9776;\"), variant=\"ghost\", hx_on_click=\"\"\"\n            htmx.find('#sidebar-render').dataset.state = htmx.find('#sidebar-render').dataset.state === 'collapsed' ? 'expanded' : 'collapsed'\n            console.log(htmx.find('#sidebar-render').dataset.state)\n            \"\"\"),\n                fh.Div(fh.Style(\"me { width: 1px; height: 100%; background: var(--zinc-300); }\")),\n                fh.Ol(aria_label=\"breadcrumb\")(\n                    fh.Style(\"\"\"\n                    me {\n                        list-style: none!important;\n                        padding: 0px!important;\n                        margin: 0px!important;\n                        display: flex;\n                        flex-wrap: wrap;\n                        align-items: center;\n                        gap: 0.375rem; /* 1.5 * 0.25rem */\n                        word-wrap: break-word;\n                        font-size: 0.875rem; /* 14px */\n                        color: var(--zinc-600);\n                    }\n                    \"\"\"),\n                    fh.Li(\"Home\"), fh.Li(\"Specific\")\n                )\n            ),\n            fh.Div(\n                fh.Style(\"\"\"\n                me {\n                    display: flex;\n                    flex-direction: column;\n                    gap: 1rem;\n                    padding: 1rem;\n                    flex: 1 1 0%;\n                }\n                \"\"\"),\n                fh.Div(\n                    fh.Style(\"\"\"\n                    me {\n                        display: grid;\n                        grid-auto-rows: min-content;\n                        gap: 1rem;\n                        grid-template-columns: repeat(3, 1fr);\n                    }\n                    \"\"\"),\n                    *[fh.Div(fh.Style(\"me { background-color: var(--zinc-50); width: 100%; min-height: 10rem; border-radius: 0.75rem; }\"))] * 3\n                ),\n                fh.Div(fh.Style(\"me { background-color: var(--zinc-50); width: 100%; min-height: 20rem; border-radius: 0.75rem; }\"))\n            )\n        )\n    )\n)\n\n\n\n\n\n  \n  \n    \n    \n      \n      \n        \n        \nopen      \n        \n        hdr popper\n      \n    \n    \n      \n      \n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n        Content here\n      \n    \n    \n      \n      \n        \nFooter here    \n      \n  \n  \n    \n    \n    \n      \n        \n☰      \n        \n      \n      \n        \n        Home\n        Specific",
+    "crumbs": [
+      "sidebar"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "Setup FastHTML styles in a Notebook.\n# try: from IPython import display\n# except ImportError: display=None\nfh.show(*hdrs)",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#button",
+    "href": "core.html#button",
+    "title": "core",
+    "section": "Button",
+    "text": "Button\n\nsource\n\nButton\n\n Button (*args, variant:str='default', target_id=None, hx_vals=None,\n         hx_target=None, id=None, cls=None, title=None, style=None,\n         accesskey=None, contenteditable=None, dir=None, draggable=None,\n         enterkeyhint=None, hidden=None, inert=None, inputmode=None,\n         lang=None, popover=None, spellcheck=None, tabindex=None,\n         translate=None, hx_get=None, hx_post=None, hx_put=None,\n         hx_delete=None, hx_patch=None, hx_trigger=None, hx_swap=None,\n         hx_swap_oob=None, hx_include=None, hx_select=None,\n         hx_select_oob=None, hx_indicator=None, hx_push_url=None,\n         hx_confirm=None, hx_disable=None, hx_replace_url=None,\n         hx_disabled_elt=None, hx_ext=None, hx_headers=None,\n         hx_history=None, hx_history_elt=None, hx_inherit=None,\n         hx_params=None, hx_preserve=None, hx_prompt=None,\n         hx_request=None, hx_sync=None, hx_validate=None, **kwargs)\n\n\nfh.show(*hdrs, fh.Div(fh.Style(\"me {display:flex;gap:2rem;}\"),\n               Button(\"Default\"), \n               Button(\"Outline\", variant=\"outline\"),\n               Button(\"Ghost\", variant=\"ghost\"),\n               Button(\"Bad\", variant=\"bad\")\n              ))\n\n\n\n\n\n  \n    \nDefault    \nOutline    \nGhost    \nBad",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#input",
+    "href": "core.html#input",
+    "title": "core",
+    "section": "Input",
+    "text": "Input\n\nsource\n\nInput\n\n Input (*args, target_id=None, hx_vals=None, hx_target=None, id=None,\n        cls=None, title=None, style=None, accesskey=None,\n        contenteditable=None, dir=None, draggable=None, enterkeyhint=None,\n        hidden=None, inert=None, inputmode=None, lang=None, popover=None,\n        spellcheck=None, tabindex=None, translate=None, hx_get=None,\n        hx_post=None, hx_put=None, hx_delete=None, hx_patch=None,\n        hx_trigger=None, hx_swap=None, hx_swap_oob=None, hx_include=None,\n        hx_select=None, hx_select_oob=None, hx_indicator=None,\n        hx_push_url=None, hx_confirm=None, hx_disable=None,\n        hx_replace_url=None, hx_disabled_elt=None, hx_ext=None,\n        hx_headers=None, hx_history=None, hx_history_elt=None,\n        hx_inherit=None, hx_params=None, hx_preserve=None, hx_prompt=None,\n        hx_request=None, hx_sync=None, hx_validate=None, **kwargs)\n\n\nfh.show(fh.Div(fh.Style(\"me {display:flex;gap:2rem;}\"),\n               Input(type=\"text\"),\n              ))",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "core.html#label",
+    "href": "core.html#label",
+    "title": "core",
+    "section": "Label",
+    "text": "Label\n\nsource\n\nLabel\n\n Label (*args, target_id=None, hx_vals=None, hx_target=None, id=None,\n        cls=None, title=None, style=None, accesskey=None,\n        contenteditable=None, dir=None, draggable=None, enterkeyhint=None,\n        hidden=None, inert=None, inputmode=None, lang=None, popover=None,\n        spellcheck=None, tabindex=None, translate=None, hx_get=None,\n        hx_post=None, hx_put=None, hx_delete=None, hx_patch=None,\n        hx_trigger=None, hx_swap=None, hx_swap_oob=None, hx_include=None,\n        hx_select=None, hx_select_oob=None, hx_indicator=None,\n        hx_push_url=None, hx_confirm=None, hx_disable=None,\n        hx_replace_url=None, hx_disabled_elt=None, hx_ext=None,\n        hx_headers=None, hx_history=None, hx_history_elt=None,\n        hx_inherit=None, hx_params=None, hx_preserve=None, hx_prompt=None,\n        hx_request=None, hx_sync=None, hx_validate=None, **kwargs)\n\n\nfh.show(fh.Div(fh.Style(\"me {display:flex;gap:2rem;}\"),\n               Label(\"Hello world\"),\n              ))\n\n\n  \n    \nHello world",
+    "crumbs": [
+      "core"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "fh-ui",
+    "section": "",
+    "text": "This file will become your README and also the index of your documentation.",
+    "crumbs": [
+      "fh-ui"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "fh-ui",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nIf you are new to using nbdev here are some useful pointers to get you started.\n\nInstall fh_ui in Development mode\n# make sure fh_ui package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to fh_ui\n$ nbdev_prepare",
+    "crumbs": [
+      "fh-ui"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "fh-ui",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/FrLars21/fh-ui.git\nor from conda\n$ conda install -c FrLars21 fh_ui\nor from pypi\n$ pip install fh_ui\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on conda and pypi respectively.",
+    "crumbs": [
+      "fh-ui"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "fh-ui",
+    "section": "How to use",
+    "text": "How to use\nFill me in please! Don’t forget code examples:\n\n1+1\n\n2",
+    "crumbs": [
+      "fh-ui"
+    ]
+  }
+]
